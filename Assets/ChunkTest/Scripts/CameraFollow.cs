@@ -9,6 +9,8 @@ public class CameraFollow : MonoBehaviour {
 	public float closest = -15f;
 	public float farthest = -500f;
 
+	public bool shouldLerp = false;
+
 
 	// Use this for initialization
 	void Start () {
@@ -34,7 +36,12 @@ public class CameraFollow : MonoBehaviour {
 			}
 		}
 
-		transform.position = new Vector3(target.transform.position.x, Mathf.Lerp(transform.position.y, target.transform.position.y, Time.deltaTime*5f), zoom);
+		if ( shouldLerp ){
+			transform.position = new Vector3(target.transform.position.x, Mathf.Lerp(transform.position.y, target.transform.position.y, Time.deltaTime*5f), zoom);		
+		} else {
+			transform.position = new Vector3(target.transform.position.x, target.transform.position.y, zoom);
+		}
+		
 
 	}
 }

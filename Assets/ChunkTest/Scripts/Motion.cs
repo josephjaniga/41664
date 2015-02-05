@@ -16,11 +16,11 @@ public class Motion : MonoBehaviour {
 	public float 	jumpDelay = .25f;
 	public GameObject pressurePlate;
 
-	// double jump
-	public bool 	canAirJump = true;
-
 	// shooting for momentum
 	public bool 	isProjecting = false;
+	public bool 	lastGrounded = false;
+	public float 	projectingMaxTime = 0.1f;
+	public float 	lastProjection = 0f;
 
 	// animating
 	public bool isLeft = false;
@@ -39,6 +39,10 @@ public class Motion : MonoBehaviour {
 
 		if ( isProjecting ){
 			pressurePlate.SetActive(false);
+			if ( rigidbody.velocity == Vector3.zero && lastProjection + projectingMaxTime <= Time.time && lastGrounded == isGrounded ){
+				isGrounded = true;
+				isProjecting = false;				
+			}
 		} else {
 			pressurePlate.SetActive(true);
 		}
@@ -53,6 +57,7 @@ public class Motion : MonoBehaviour {
 
 		// space
 		if ( Input.GetKey("space") ) {
+
 			if ( isGrounded ){ // if on the ground
 				if ( Time.time > lastJump + jumpDelay ){
 					rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
@@ -62,15 +67,6 @@ public class Motion : MonoBehaviour {
 						rigidbody2D.AddForce(new Vector3(0f, jumpForce));
 					isGrounded = false;
 					lastJump = Time.time;
-				}
-			} else if ( canAirJump ) { // if in the air
-				if ( Time.time >= lastJump + 0.35f ){ // impose a delay
-					rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
-					if ( rigidbody != null )
-						rigidbody.AddForce(new Vector3(0f, jumpForce, 0f));
-					else 
-						rigidbody2D.AddForce(new Vector3(0f, jumpForce));
-					canAirJump = false;
 				}
 			}
 
@@ -88,7 +84,9 @@ public class Motion : MonoBehaviour {
 			} else {
 				a.SetBool("isRunning", false);
 			}
-		} else {
+		}
+		/*
+		else {
 			if ( Input.GetKeyDown(KeyCode.A) ){	// left
 				x = -.75f * speed;
 				isLeft = true;
@@ -99,6 +97,7 @@ public class Motion : MonoBehaviour {
 				a.SetBool("isRunning", true);
 			}
 		}
+		*/
 		
 		if ( rigidbody != null){
 			if ( x == 0f && isGrounded ){
@@ -127,12 +126,16 @@ public class Motion : MonoBehaviour {
 		Ground.HasNotGrounded 	-= IsNotGrounded;
 		Shoot.IsProjecting		+= Projecting;
 	}
-	void Grounding(){
-		isGrounded = true;
-		canAirJump = true;
-	}
+
 	void IsNowGrounded(){ isGrounded = true; }
 	void IsNotGrounded(){ isGrounded = false; }
-	void Projecting( bool B ){ isProjecting = B; isGrounded = false; canAirJump = true; }
+	void Projecting( bool B ){ 
+		IsNotGrounded();
+		isProjecting = B; 
+		if ( B ){
+			lastProjection = Time.time;
+			lastGrounded = isGrounded;
+		}
+	}
 
 }

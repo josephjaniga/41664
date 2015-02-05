@@ -45,6 +45,8 @@ public class Shoot : MonoBehaviour {
 	        RaycastHit hit;
 
 	        Vector3 blowBack = mousePosition-transform.position;
+
+	        playerRB.velocity = Vector3.zero;
 			playerRB.AddForce( shotForce * blowBack );
 
 			lastShot = Time.time;
