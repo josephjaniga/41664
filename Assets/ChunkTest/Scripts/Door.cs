@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.Timers;
 
 public class Door : MonoBehaviour {
 
@@ -27,8 +29,12 @@ public class Door : MonoBehaviour {
 				mechanism = new PlayerProximityOpen(gameObject.transform.parent.gameObject, Proximity);
 			break;
 			case DoorMechanismTypes.PlayerProximityClosed:
-				doorSpeed = 6.0f;
+				doorSpeed = 12.0f;
 				mechanism = new PlayerProximityClosed(gameObject.transform.parent.gameObject, Proximity);
+			break;
+			case DoorMechanismTypes.TimedMechanism:
+				doorSpeed = 6.0f;
+				mechanism = new TimedMechanism(Time.time, 4f);
 			break;
 		}
 	}
@@ -49,7 +55,8 @@ public enum DoorMechanismTypes{
 	AlwaysOpen,
 	AlwaysClosed,
 	PlayerProximityOpen,
-	PlayerProximityClosed
+	PlayerProximityClosed,
+	TimedMechanism
 }
 
 public interface IDoorOpenMechanism
@@ -116,5 +123,31 @@ public class PlayerProximityClosed : IDoorOpenMechanism{
 			}
 		}
 		return temp;
+	}
+}
+
+public class TimedMechanism : IDoorOpenMechanism{
+
+	public bool target = false;
+
+	public int startTime;
+	public int interval = 4000;
+
+	public Timer clock;
+
+	public TimedMechanism(float currentTime, float intervalF=4f){
+		interval = Mathf.RoundToInt(intervalF * 1000);
+		startTime = Mathf.RoundToInt(( currentTime + UnityEngine.Random.Range(0f, 1f) ) * 1000);
+		clock = new System.Timers.Timer(interval);
+		clock.Elapsed += InvertTarget;
+		clock.Enabled = true;
+	}
+
+	public void InvertTarget(object source, ElapsedEventArgs e){
+		target = !target;
+	}
+
+	public bool targetPosition(){
+		return target;
 	}
 }
