@@ -28,10 +28,15 @@ public class Motion : MonoBehaviour {
 	public bool isRunning = false;
 	public Animator a;
 
+	// sound 
+	public AudioSource source;
+	public AudioClip jumpSound;
 
 	// Use this for initialization
 	void Start () {
-		a = gameObject.GetComponent<Animator>();
+		jumpSound = Resources.LoadAssetAtPath<AudioClip>("Assets/ChunkTest/Audio/Jump.wav");
+		a 		= gameObject.GetComponent<Animator>();
+		source 	= GameObject.Find("GM").GetComponent<AudioSource>();
 	}
 
 	// Update is called once per frame
@@ -60,6 +65,7 @@ public class Motion : MonoBehaviour {
 
 			if ( isGrounded ){ // if on the ground
 				if ( Time.time > lastJump + jumpDelay ){
+					source.PlayOneShot(jumpSound);
 					rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
 					if ( rigidbody != null )
 						rigidbody.AddForce(new Vector3(0f, jumpForce, 0f));
@@ -119,12 +125,12 @@ public class Motion : MonoBehaviour {
 	void OnEnable(){
 		Ground.HasGrounded 		+= IsNowGrounded;
 		Ground.HasNotGrounded 	+= IsNotGrounded;
-		Shoot.IsProjecting		+= Projecting;
+		WeaponManager.IsProjecting		+= Projecting;
 	}
 	void OnDisable(){
 		Ground.HasGrounded 		-= IsNowGrounded;
 		Ground.HasNotGrounded 	-= IsNotGrounded;
-		Shoot.IsProjecting		+= Projecting;
+		WeaponManager.IsProjecting		+= Projecting;
 	}
 
 	void IsNowGrounded(){ isGrounded = true; }

@@ -59,8 +59,7 @@ public enum DoorMechanismTypes{
 	TimedMechanism
 }
 
-public interface IDoorOpenMechanism
-{
+public interface IDoorOpenMechanism{
 	bool targetPosition();
 }
 
@@ -79,14 +78,16 @@ public class AlwaysClosed : IDoorOpenMechanism{
 public class PlayerProximityOpen : IDoorOpenMechanism{
 
 	public float distance = 40f;
+	public GameObject playerGO;
 	public Transform player;
 	public Transform door;
 
 	public PlayerProximityOpen(GameObject doorGO, float dist){
 		distance = dist;
 		door = doorGO.transform;
-		if ( GameObject.Find("Player") != null ){
-			player = GameObject.Find("Player").transform;
+		playerGO = GameObject.Find("Player");
+		if ( playerGO != null ){
+			player = playerGO.transform;
 		}
 	}
 
@@ -104,14 +105,16 @@ public class PlayerProximityOpen : IDoorOpenMechanism{
 public class PlayerProximityClosed : IDoorOpenMechanism{
 
 	public float distance = 40f;
+	public GameObject playerGO;
 	public Transform player;
 	public Transform door;
 
 	public PlayerProximityClosed(GameObject doorGO, float dist){
 		distance = dist;
 		door = doorGO.transform;
-		if ( GameObject.Find("Player") != null ){
-			player = GameObject.Find("Player").transform;
+		playerGO = GameObject.Find("Player");
+		if ( playerGO != null ){
+			player = playerGO.transform;
 		}
 	}
 

@@ -5,16 +5,17 @@ public class CameraFollow : MonoBehaviour {
 
 	public GameObject target;
 
-	public float zoom = -55f;
-	public float closest = -15f;
+	public float zoom = -66f;
+	public float closest = -66f;
 	public float farthest = -500f;
 
 	public bool shouldLerp = false;
 
-
 	// Use this for initialization
 	void Start () {
-	
+		if ( target == null ){
+			target = GameObject.Find("Player");
+		}
 	}
 	
 	// Update is called once per frame
