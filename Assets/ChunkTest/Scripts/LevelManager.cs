@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour {
 	void Start () {
 	
 		player = GameObject.Find("Player");
+		player.transform.position = startingPosition.position;
 
 	}
 	

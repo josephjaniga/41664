@@ -3,13 +3,34 @@ using System.Collections;
 
 public class GunAimAtMouse : MonoBehaviour {
 	
+	public bool useMouse = true;
+
 	void Update () {
 
+		Vector2 mouse;
+		Vector2 relmousepos;
 		float angle;
-		Vector2 mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition); //Mouse position
+
 		Vector3 objpos = Camera.main.WorldToViewportPoint (transform.position); //Object position on screen
 		Vector2 relobjpos = new Vector2(objpos.x - 0.5f,objpos.y - 0.5f); //Set coordinates relative to object
-		Vector2 relmousepos = new Vector2 (mouse.x - 0.5f,mouse.y - 0.5f) - relobjpos;
+
+		if ( useMouse ){
+			mouse = Camera.main.ScreenToViewportPoint(Input.mousePosition); //Mouse position
+			relmousepos = new Vector2 (mouse.x - 0.5f,mouse.y - 0.5f) - relobjpos;
+		} else {
+
+			if ( Input.GetAxis("RightJoystickX") == 0f && Input.GetAxis("RightJoystickY") == 0f ){
+				if ( transform.parent.transform.localScale.x >=0f ) { // facing right
+					mouse = new Vector2( 1f, 0f );
+				} else {  // facing left
+					mouse = new Vector2( -1f, 0f );
+				}
+
+			} else {
+				mouse = new Vector2( Input.GetAxis("RightJoystickX"), -Input.GetAxis("RightJoystickY")); //Mouse position
+			}
+			relmousepos = new Vector2 (mouse.x,mouse.y);
+		}
 		
 		// facing right
 		if ( transform.parent.transform.localScale.x >=0f ){

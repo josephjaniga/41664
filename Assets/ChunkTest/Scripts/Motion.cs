@@ -32,6 +32,8 @@ public class Motion : MonoBehaviour {
 	public AudioSource source;
 	public AudioClip jumpSound;
 
+	private float movementThreshold = .15f;
+
 	// Use this for initialization
 	void Start () {
 		jumpSound = Resources.LoadAssetAtPath<AudioClip>("Assets/ChunkTest/Audio/Jump.wav");
@@ -61,7 +63,7 @@ public class Motion : MonoBehaviour {
 		float x = 0.0f;
 
 		// space
-		if ( Input.GetKey("space") ) {
+		if ( Input.GetKey("space") || Input.GetButtonDown("A") ) {
 
 			if ( isGrounded ){ // if on the ground
 				if ( Time.time > lastJump + jumpDelay ){
@@ -79,31 +81,28 @@ public class Motion : MonoBehaviour {
 		}
 	
 		if ( isGrounded ){
-			if ( Input.GetKey("a") ){	// left
+			if ( Input.GetKey("a") || Input.GetAxis("LeftJoystickX") < -movementThreshold ){	// left
 				x = -1f * speed;
 				isLeft = true;
 				a.SetBool("isRunning", true);
-			} else if ( Input.GetKey("d") ){	// right
+			} else if ( Input.GetKey("d") || Input.GetAxis("LeftJoystickX") > movementThreshold ){	// right
 				x = 1f * speed;
 				isLeft = false;
 				a.SetBool("isRunning", true);
 			} else {
 				a.SetBool("isRunning", false);
 			}
-		}
-		/*
-		else {
-			if ( Input.GetKeyDown(KeyCode.A) ){	// left
-				x = -.75f * speed;
+		} else {
+			if ( Input.GetKey("a") || Input.GetAxis("LeftJoystickX") < -movementThreshold ){	// left
+				rigidbody.AddForce(new Vector3(-22f, 0f, 0f));
 				isLeft = true;
 				a.SetBool("isRunning", true);
-			} else if ( Input.GetKeyDown(KeyCode.D) ){	// right
-				x = .75f * speed;
+			} else if ( Input.GetKey("d") || Input.GetAxis("LeftJoystickX") > movementThreshold  ){	// right
+				rigidbody.AddForce(new Vector3(22f, 0f, 0f));
 				isLeft = false;
 				a.SetBool("isRunning", true);
 			}
 		}
-		*/
 		
 		if ( rigidbody != null){
 			if ( x == 0f && isGrounded ){
