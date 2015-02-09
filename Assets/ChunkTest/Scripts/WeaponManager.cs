@@ -172,16 +172,20 @@ public class RocketLauncher : IWeapon {
 	public WeaponManager WM { set; get; }
 	public RocketLauncher (){ WM = WeaponManager.instance; }
 
-	public float rocketExplosionForce = 7000f;
+	public float rocketLastShotSound = -5f;
+	public float rocketSoundCD = .75f;
+	public float rocketLastShot = -5f;
+	public float rocketShotCD = .75f;
+	public float rocketExplosionForce = 8000f;
 
 	public void attackOne(){
 
-		if ( WM.lastShotSound + WM.soundCD <= Time.time ){
-			WM.lastShotSound = Time.time;
+		if ( rocketLastShotSound + rocketSoundCD <= Time.time ){
+			rocketLastShotSound = Time.time;
 			WM.source.PlayOneShot(shootSound);
 		}
 
-		if ( WM.lastShot + WM.shotCD <= Time.time ){
+		if ( rocketLastShot + rocketShotCD <= Time.time ){
 
 			WM.DelegateIsProjecting();
 
@@ -189,7 +193,7 @@ public class RocketLauncher : IWeapon {
 			mousePosition.z = 0f;
 	        RaycastHit hit;
 
-			WM.lastShot = Time.time;
+			rocketLastShot = Time.time;
 
 	        //Debug.DrawRay(transform.position, transform.position-mousePosition, Color.red);
 	        if (Physics.Raycast(WM.firePoint.position, WM.firePoint.position-mousePosition, out hit, Mathf.Infinity, WM.playerLayerMask)){
@@ -199,8 +203,10 @@ public class RocketLauncher : IWeapon {
 	        	Vector3 blowBack = WM.firePoint.position - hit.point;
 	        	float dist = Vector3.Distance(hit.point, WM.firePoint.position);
 
-				if ( dist < 15f ){
-					WM.playerRB.AddForce( rocketExplosionForce / Mathf.Pow(dist, 1) * blowBack.normalized );
+				if ( dist < 25f ){
+					Vector3 tempForce = Mathf.Clamp( rocketExplosionForce / (dist/4), -rocketExplosionForce, rocketExplosionForce ) * blowBack.normalized;
+					Debug.Log( tempForce );
+					WM.playerRB.AddForce( tempForce );
 				}
 	        }
 		}
