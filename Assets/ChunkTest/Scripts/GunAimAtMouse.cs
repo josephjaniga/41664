@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GunAimAtMouse : MonoBehaviour {
 	
+	// enable or disable xbox remote
 	public bool useMouse = true;
 
 	void Update () {
