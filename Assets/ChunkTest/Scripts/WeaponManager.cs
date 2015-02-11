@@ -51,8 +51,16 @@ public class WeaponManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
+
+	void OnDrawGizmos() {
+		// Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+		// mp.z = 0f;
+  //       Gizmos.color = Color.yellow;
+  //       Gizmos.DrawSphere(mp, 1F);
+  //       Debug.Log(mp);
+    }
 
 	public void weaponSwitch(){
 		if ( lastSwapSound + swapSoundCD <= Time.time ){
@@ -143,6 +151,8 @@ public class ShotGun : IWeapon {
 
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
 			mousePosition.z = 0f;
+
+
 	        RaycastHit hit;
 
 	        Vector3 blowBack = mousePosition-WM.firePoint.position;
@@ -189,14 +199,15 @@ public class RocketLauncher : IWeapon {
 
 			WM.DelegateIsProjecting();
 
-			Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-			mousePosition.z = 0f;
+			Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+			mp.z = 0f;
 	        RaycastHit hit;
 
 			rocketLastShot = Time.time;
 
-	        //Debug.DrawRay(transform.position, transform.position-mousePosition, Color.red);
-	        if (Physics.Raycast(WM.firePoint.position, WM.firePoint.position-mousePosition, out hit, Mathf.Infinity, WM.playerLayerMask)){
+			Debug.Log(Input.mousePosition);
+
+	        if (Physics.Raycast(WM.firePoint.position, WM.firePoint.position-mp, out hit, Mathf.Infinity, WM.playerLayerMask)){
 	        	Transform temp =  GameObject.Instantiate(WM.explosionEffect, hit.point, Quaternion.identity) as Transform;
 
 	        	//WM.playerRB.velocity = Vector3.zero;
@@ -205,7 +216,7 @@ public class RocketLauncher : IWeapon {
 
 				if ( dist < 25f ){
 					Vector3 tempForce = Mathf.Clamp( rocketExplosionForce / (dist/4), -rocketExplosionForce, rocketExplosionForce ) * blowBack.normalized;
-					Debug.Log( tempForce );
+					//Debug.Log( tempForce );
 					WM.playerRB.AddForce( tempForce );
 				}
 	        }
