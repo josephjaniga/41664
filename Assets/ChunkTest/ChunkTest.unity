@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f91d492a69ca4c2487d8ae6035329b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useMouse: 1
 --- !u!1 &1296429761
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,6 +255,8 @@ MonoBehaviour:
   playerScale: {x: 2, y: 2, z: 2}
   isRunning: 0
   a: {fileID: 0}
+  source: {fileID: 0}
+  jumpSound: {fileID: 0}
 --- !u!136 &1305160105
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -392,16 +395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21087805a8f314379ad9651dcd05e37f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 400000, guid: 4bea73bfd7ce548508d67e6b5e7fb855, type: 2}
-  shootSound: {fileID: 8300000, guid: 934297f6b2c7f47c4a4bbb7462e88e3c, type: 3}
-  source: {fileID: 0}
-  lastShotSound: 0
-  soundCD: 1.75
-  lastShot: 0
-  shotCD: 1.75
-  shotForce: 750
-  player: {fileID: 0}
-  playerRB: {fileID: 0}
 --- !u!82 &1508874159
 AudioSource:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class Door : MonoBehaviour {
 
 	public DoorMechanismTypes type = DoorMechanismTypes.PlayerProximityOpen;
 
+	public string SwitchName = "";
+
 	void Start(){
 		switch (type){
 			default:
@@ -35,6 +37,9 @@ public class Door : MonoBehaviour {
 			case DoorMechanismTypes.TimedMechanism:
 				doorSpeed = 6.0f;
 				mechanism = new TimedMechanism(Time.time, 4f);
+			break;
+			case DoorMechanismTypes.SwitchMechanism:
+				mechanism = new SwitchMechanism(SwitchName);
 			break;
 		}
 	}
@@ -56,7 +61,8 @@ public enum DoorMechanismTypes{
 	AlwaysClosed,
 	PlayerProximityOpen,
 	PlayerProximityClosed,
-	TimedMechanism
+	TimedMechanism,
+	SwitchMechanism
 }
 
 public interface IDoorOpenMechanism{
@@ -102,7 +108,7 @@ public class PlayerProximityOpen : IDoorOpenMechanism{
 	}
 }
 
-public class PlayerProximityClosed : IDoorOpenMechanism{
+public class PlayerProximityClosed : IDoorOpenMechanism {
 
 	public float distance = 40f;
 	public GameObject playerGO;
@@ -129,7 +135,7 @@ public class PlayerProximityClosed : IDoorOpenMechanism{
 	}
 }
 
-public class TimedMechanism : IDoorOpenMechanism{
+public class TimedMechanism : IDoorOpenMechanism {
 
 	public bool target = false;
 
@@ -152,5 +158,15 @@ public class TimedMechanism : IDoorOpenMechanism{
 
 	public bool targetPosition(){
 		return target;
+	}
+}
+
+public class SwitchMechanism : IDoorOpenMechanism {
+	public Switch doorSwitch;
+	public SwitchMechanism(string switchName){
+		doorSwitch = GameObject.Find(switchName).GetComponent<Switch>();
+	}
+	public bool targetPosition(){
+		return doorSwitch.active;
 	}
 }

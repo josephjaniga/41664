@@ -101,6 +101,14 @@ public class WeaponManager : MonoBehaviour {
 			IsProjecting(true);
 		}
 	}
+
+	public void switchCheck(GameObject go){
+		Switch temp = go.GetComponent<Switch>();
+		if ( temp != null ){
+			temp.activate();
+		}
+	}
+
 }
 
 public enum Weapons {
@@ -162,6 +170,7 @@ public class ShotGun : IWeapon {
 
 	        if (Physics.Raycast(WM.firePoint.position, mp-WM.firePoint.position, out hit, Mathf.Infinity, WM.playerLayerMask)){
 	        	Transform temp =  GameObject.Instantiate(WM.sparkEffect, hit.point, Quaternion.identity) as Transform;
+	        	WM.switchCheck(hit.transform.gameObject);
 	        }
 		}
 	}
@@ -203,7 +212,7 @@ public class RocketLauncher : IWeapon {
 
 	        if (Physics.Raycast(WM.firePoint.position, mp-WM.firePoint.position, out hit, Mathf.Infinity, WM.playerLayerMask)){
 	        	Transform temp =  GameObject.Instantiate(WM.explosionEffect, hit.point, Quaternion.identity) as Transform;
-
+	        	WM.switchCheck(hit.transform.gameObject);
 	        	//WM.playerRB.velocity = Vector3.zero;
 	        	Vector3 blowBack = WM.firePoint.position - hit.point;
 	        	float dist = Vector3.Distance(hit.point, WM.firePoint.position);
