@@ -292,6 +292,7 @@ MonoBehaviour:
   doorSpeed: 3
   shouldOpen: 0
   type: 2
+  SwitchName: 
 --- !u!23 &508575439
 Renderer:
   m_ObjectHideFlags: 0
@@ -421,6 +422,7 @@ MonoBehaviour:
   startingPosition: {fileID: 1678601317}
   player: {fileID: 0}
   isDead: 0
+  camera: {fileID: 0}
   nextLevelName: TestLevel_04
 --- !u!4 &529815687
 Transform:
@@ -483,6 +485,7 @@ MonoBehaviour:
   doorSpeed: 3
   shouldOpen: 0
   type: 3
+  SwitchName: 
 --- !u!23 &539354151
 Renderer:
   m_ObjectHideFlags: 0
@@ -956,6 +959,7 @@ MonoBehaviour:
   doorSpeed: 3
   shouldOpen: 0
   type: 4
+  SwitchName: 
 --- !u!23 &1317041700
 Renderer:
   m_ObjectHideFlags: 0

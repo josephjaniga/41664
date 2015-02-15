@@ -370,6 +370,7 @@ MonoBehaviour:
   startingPosition: {fileID: 1678601317}
   player: {fileID: 0}
   isDead: 0
+  camera: {fileID: 0}
   nextLevelName: TestLevel_03
 --- !u!4 &529815687
 Transform:
