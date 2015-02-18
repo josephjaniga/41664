@@ -2,4 +2,4 @@
 
 Working on a Motion demo for puzzle platformer
 
-updating for mechanic demos
+Updating for mechanic demos, doing research for AABB implementation
